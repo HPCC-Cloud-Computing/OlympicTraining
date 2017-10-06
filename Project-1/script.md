@@ -2,9 +2,9 @@
 
 #### **1. Kịch bản**
 
-```sh
+
 Đo nhiệt độ độ ẩm môi trường từ sensor DHT11, lưu dữ liệu đo được lưu vào influxdb, vẽ biểu đồ realtime có hiển thị giá trị nhiệt độ độ ẩm min/max và thời gian đo được, kiểm tra khi nhiệt độ/độ ẩm lớn hơn ngưỡng mà người dùng nhập vào trên giao diện node-red thì sẽ gửi email cảnh báo, và gửi tín hiệu bật/tắt đèn led
-```
+
 
 #### **2. Chuẩn bị**
 
