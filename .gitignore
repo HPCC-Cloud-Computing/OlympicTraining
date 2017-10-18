@@ -1,5 +1,10 @@
 # Prerequisites
 *.d
+influxdb-volume/
+mqtt-volume/
+node-red-nodes/
+node-red-volume/
+
 
 # Compiled Object files
 *.slo
