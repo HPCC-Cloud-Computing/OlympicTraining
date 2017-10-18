@@ -1,0 +1,27 @@
+{
+    "version": "1.0.0",
+    "description": "A node used for query real time data from web server",
+    "dependencies": {
+        "follow-redirects":"1.2.4",
+        "request":"2.82.0",
+        "request-promise":"4.2.1"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Ha Minh Cong",
+    "license": "ISC",
+    "keywords": [
+        "node-red",
+        "real time",
+        "webserver",
+        "input"
+    ],
+    "main": "none",
+    "name": "node-red-contrib-input-real-time-data",
+    "node-red": {
+        "nodes": {
+            "real-time-input": "input-real-time-data.js"
+        }
+    }
+}

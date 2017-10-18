@@ -1,0 +1,18 @@
+{
+    "version": "1.0.0",
+    "description": "A example about node input",
+    "dependencies": {
+    },
+    "author": "Ha Minh Cong",
+    "license": "ISC",
+    "keywords": [
+        "input",
+        "example"
+    ],
+    "name": "input-example-in-node-red",
+    "node-red": {
+        "nodes": {
+            "input-example": "input-in-node-red-example.js"
+        }
+    }
+}
