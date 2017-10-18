@@ -1,0 +1,10 @@
+
+
+HELLO
+from cinderclient.v2 import client
+AUTH_URL="http://10.10.10.10:35357/v3"
+PASSWORD="bkcloud"
+USERNAME="admin"
+PROJECT_ID="7b3aaa20120948da87db32f15d388fd2"
+nt = client.Client(USERNAME, PASSWORD, PROJECT_ID, AUTH_URL)
+nt.volumes.list()
