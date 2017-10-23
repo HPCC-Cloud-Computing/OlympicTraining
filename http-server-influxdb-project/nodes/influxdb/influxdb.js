@@ -273,12 +273,10 @@ module.exports = function (RED) {
                             .queryData(node.influxClient, converted_query)
                             .then(function (queryResult) {
                                 if (queryResult !== false) {
-                                    console.log(converted_query);
-                                    console.log(queryResult);
-                                    console.log("done");
-                                    var outMsg = {
-                                        payload: msg.payload
-                                    };
+                                    // console.log(converted_query);
+                                    // console.log(queryResult);
+                                    // console.log("done");
+                                    var outMsg = msg;
                                     outMsg[node.outputTo] = queryResult;
                                     node.send(outMsg);
                                 }

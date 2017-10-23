@@ -9,7 +9,7 @@ module.exports = function (RED) {
         
         this.on("input", function (msg) {
             console.log(__dirname);
-            fs.readFile(__dirname + '/templates/chart.html',"utf8", function (err, data) {
+            fs.readFile(__dirname + '/templates/chart-index.html',"utf8", function (err, data) {
                 console.log(data);
                 msg.payload = data;
                 node.send(msg);

@@ -78,20 +78,49 @@ if __name__ == "__main__":
             base_light = 0
             # light mid range: 500, range 0 -1000
 
-            for i in range(1, 200):
-                publish_data = {
+            for i in range(1, 20000):
+
+                sensor1_publish_data = {
                     'data': {
                         'temperature': base_temperature + randint(0, 35),
                         'humidity': base_humidity + randint(0, 80),
-                        'light': base_light + randint(0, 1000),
+                        'light': base_light + randint(100, 300),
                     },
                     'time_stamp': int(round(time.time() * 1000)),
                     'time_precision': 'millisecond',
-                    'sender_sensor': 'iot_simulator_python',
+                    'sender_sensor': 'sensor1',
                     'author':"HMC"
                 }
-                ret = client.publish("iot/sensor", json.dumps(publish_data))
-                time.sleep(1)
+
+                ret = client.publish("iot/sensor", json.dumps(sensor1_publish_data))
+
+                sensor2_publish_data = {
+                    'data': {
+                        'temperature': base_temperature + randint(0, 35),
+                        'humidity': base_humidity + randint(0, 80),
+                        'light': base_light + randint(300, 600),
+                    },
+                    'time_stamp': int(round(time.time() * 1000)),
+                    'time_precision': 'millisecond',
+                    'sender_sensor': 'sensor2',
+                    'author':"HMC"
+                }
+                ret = client.publish("iot/sensor", json.dumps(sensor2_publish_data))
+
+                sensor3_publish_data = {
+                    'data': {
+                        'temperature': base_temperature + randint(0, 35),
+                        'humidity': base_humidity + randint(0, 80),
+                        'light': base_light + randint(600, 1000),
+                    },
+                    'time_stamp': int(round(time.time() * 1000)),
+                    'time_precision': 'millisecond',
+                    'sender_sensor': 'sensor3',
+                    'author':"HMC"
+                }
+                ret = client.publish("iot/sensor", json.dumps(sensor3_publish_data))
+
+                time.sleep(0.5)
             client.loop_stop()
             client.disconnect()
         else:
