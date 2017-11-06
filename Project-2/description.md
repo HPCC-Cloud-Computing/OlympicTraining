@@ -16,7 +16,7 @@ Các thông tin đặc trưng của devices và sensor:
 - Sensors: sensorID (do người dùng tự định nghĩa), device_mac_address, unit (đơn vị 	đo)
 
 
-#### **2. Các công nghệ sử dụng chính: **
+#### **2. Các công nghệ sử dụng chính:**
 
 + Node-red: đóng vai trò làm webserver cung cấp giao diện người dùng, đồng thời là nơi xử lý dữ liệu để lưu vào trong cơ sở dữ liệu, thực hiện các luồng logic để đưa ra các action cho các devices.
 + Ardunio: thực hiện code firmware cho devices
@@ -38,7 +38,8 @@ Như trong mô hình trên ta có thể thấy trong hệ thống sẽ có 2 lu�
 
 Đối tượng **User** ở trong hình là chỉ người dùng cuối (không phải nhà phát triển sử dụng giao diện kéo thả của node-red), sẽ truy cập vào giao diện người dùng để xem các thông tin về devices, sensor và các biểu đồ dữ liệu, thông qua việc gửi các HTTP Request.
 
-**Connection**
+#### **Connection**
+
 Để xây dựng 1 hệ thống, vấn đề đầu tiên đó là việc giao tiếp giữa các thành phần.
 Như trong hệ thống tổng quan bên trên, ta có thể chia hệ thống thành 3 thành phần chính cần giao tiếp với nhau. Đó là 
 
@@ -138,11 +139,14 @@ Khi nhận được action trên topic **icse/XX/action** với định dạng:
 thì sẽ thực hiện việc bật tắt đèn với id tương ứng.
 
 
+
 #### **Hoạt động xử lý dữ liệu của Node-red**
 
 Bao gồm 3 hoạt động chính, tương ứng với khi nhận được 3 loại thông điệp từ MQTT Broker.
 
+
 **Hoạt động 1**: khi nhận được dữ liệu từ device trên topic icse/data:
+
 Đầu vào:
 
 	{macAddr: "xx:xx:xx:xx:xx", sensorID: "yy", value: "zz", unit: "kk"}
@@ -180,7 +184,9 @@ Sau đó tiến hành kiểm tra định dạng dữ liệu tương ứng với 
 
 		{ledID: “LED2”, action: “ON/OFF”}
 
+
 **Hoạt động 2**: khi nhận được dữ liệu trên topic **icse/newDevices**:
+
 Đầu vào:
 
 	{macAddr: "xx:xx:xx:xx:xx", type: "xxx"}
@@ -197,6 +203,7 @@ Sau đó tiến hành kiểm tra định dạng dữ liệu tương ứng với 
 		
 Cụ thể: 
 Khi nhận được dữ liệu đăng kí device mới, kiểm tra xem device này đã có trong cơ sở dữ liệu hay chưa, nếu có thì tiến hành lưu trữ vào cơ sở dữ liệu và public message đăng kí thành công tới cho device.
+
 
 **Hoạt động 3**: khi nhận được dữ liệu trên topic **icse/deviceStatus**:
 
