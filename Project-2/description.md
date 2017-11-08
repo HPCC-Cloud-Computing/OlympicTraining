@@ -122,7 +122,7 @@ trong đó các trường device_macAddr, sensorID là các tags được đánh
 Khi code fimrware sẽ tự định nghĩa các sensorID.
 Connect và subscribe topic **icse/XX/action** với **XX** là macaddress của device đó.
 
-Sử dụng 1 biến checkSum trong bộ nhớ EEPROM để kiểm tra xem đã gửi thông tin đăng kí thiết bị mới chưa. Nếu chưa thì sẽ gửi thông điệp có định dạng sau lên topic **icse/newDevices**:
+Khi bắt chạy thì gửi thông điệp có định dạng sau lên topic **icse/newDevices**:
 
 	{macAddr: "xx:xx:xx:xx:xx", type: "xxx"}
 	
@@ -130,7 +130,11 @@ Sử dụng 1 biến checkSum trong bộ nhớ EEPROM để kiểm tra xem đã 
 
 	{type: “subcribeNewDevice”, status: “OK”}
 	
-Thiết lập 1 khoảng thời gian interval là **10s**, sau mỗi 10s lại gửi message đăng kí lên cho tới khi nào nhận được thông điệp thành công.
+hoặc **nhận** được message trả về là đã đăng kí với định dạng:
+
+	{type: “subcribeNewDevice”, status: “REGISTERED”}
+
+Thiết lập 1 khoảng thời gian interval là **10s**, sau mỗi 10s lại gửi message đăng kí lên cho tới khi nào nhận được thông điệp thành công hoặc đã đăng kí.
 
 Khi nhận được action trên topic **icse/XX/action** với định dạng:
 
@@ -193,16 +197,17 @@ Sau đó tiến hành kiểm tra định dạng dữ liệu tương ứng với 
 
 Đầu ra:
 	
-- Lưu dữ liệu về device mới vào database:
+- Lưu dữ liệu về device mới vào database nếu là device mới:
 	
 		macAddr: "xx:xx:xx:xx:xx", type: "xxx",  devicesStatus= ONLINE
 
 - Gửi message với định dạng dưới lên topic icse/XX/action với XX là macAddr nhận 	được trong message:
 
-		{type: “subcribeNewDevice”, status: “OK”}
+		{type: “subcribeNewDevice”, status: “OK" / "REGISTERED”}
+
 		
 Cụ thể: 
-Khi nhận được dữ liệu đăng kí device mới, kiểm tra xem device này đã có trong cơ sở dữ liệu hay chưa, nếu có thì tiến hành lưu trữ vào cơ sở dữ liệu và public message đăng kí thành công tới cho device.
+Khi nhận được dữ liệu đăng kí device mới, kiểm tra xem device này đã có trong cơ sở dữ liệu hay chưa, nếu có thì tiến hành lưu trữ vào cơ sở dữ liệu và public message đăng kí thành công tới cho device còn nếu đã có thì gửi lại message đã đăng kí.
 
 
 **Hoạt động 3**: khi nhận được dữ liệu trên topic **icse/deviceStatus**:
