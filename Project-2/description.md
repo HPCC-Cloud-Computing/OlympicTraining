@@ -120,7 +120,7 @@ trong đó các trường device_macAddr, sensorID là các tags được đánh
 
 #### **Họat động của ESP**
 Khi code fimrware sẽ tự định nghĩa các sensorID.
-Connect và subscribe topic **icse/XX/action** với **XX** là macaddress của device đó.
+Connect và subscribe topic **icse/XX/action** với **XX** là macAddress của device đó.
 
 Khi bắt chạy thì gửi thông điệp có định dạng sau lên topic **icse/newDevices**:
 
@@ -136,11 +136,23 @@ hoặc **nhận** được message trả về là đã đăng kí với định 
 
 Thiết lập 1 khoảng thời gian interval là **10s**, sau mỗi 10s lại gửi message đăng kí lên cho tới khi nào nhận được thông điệp thành công hoặc đã đăng kí.
 
+Sau khi nhận được lại message thông báo đã đăng kí thành công hoặc đã đăng kí rồi thì đăng kí Last Will Message với MQTT broker trên topic **icse/XX/deviceStatus** với nội dung message:
+
+	{macAddr: "xx:xx:xx:xx:xx", status: "OFFLINE"}
+	
+Sau khi đăng kí Last Will Message thì tiến hành lấy dữ liệu từ các sensor để gửi lên topic **icse/data** với nội dung:
+
+	{macAddr: "xx:xx:xx:xx", sensorID: "yy", value: "zz", unit: "kk"}
+
+Trong đó, đối với sensor cảm biến ánh sáng thì 5s gửi 1 lần, cảm biến nhiệt độ thì 10s gửi 1 lần, cảm biến nhiệt độ độ ẩm 5s gửi 1 lần.
+
 Khi nhận được action trên topic **icse/XX/action** với định dạng:
 
 	{"ledID": "xxx", action: ON/OFF}
 	
 thì sẽ thực hiện việc bật tắt đèn với id tương ứng.
+
+
 
 
 
