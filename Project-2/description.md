@@ -84,7 +84,7 @@ Trong đó: macAddr là địa chỉ mac của device, type là kiểu (E.g: ESP
 
 **icse/XX/action**: node-red gửi action tới device có địa chỉ mac là XX với định dạng:
 
-	{"ledID": "xxx", action: ON/OFF} để điều khiển đèn led
+	{type: “ledAction”, "ledID": "xxx", action: ON/OFF} để điều khiển đèn led
 	{type: “subcribeNewDevice”, status: “OK”} để thông báo đăng kí thiết bị mới thành 	công
 
 **icse/XX/deviceStatus**: topic để device có **macAddr** là **XX** sẽ connect tới và đăng kí 1 **Last Will Message** với định dạng: 
@@ -148,7 +148,7 @@ Trong đó, đối với sensor cảm biến ánh sáng thì 5s gửi 1 lần, c
 
 Khi nhận được action trên topic **icse/XX/action** với định dạng:
 
-	{"ledID": "xxx", action: ON/OFF}
+	{type: “ledAction”, "ledID": "xxx", action: ON/OFF}
 	
 thì sẽ thực hiện việc bật tắt đèn với id tương ứng.
 
@@ -194,11 +194,11 @@ Sau đó tiến hành kiểm tra định dạng dữ liệu tương ứng với 
 
 - Khi dữ liệu là nhiệt độ > ngưỡng hoặc không đúng định dạng thì đèn led1 với ledID là 	LED1 bật (ON), còn nếu đúng định dạng thì đèn led1 tắt (OFF):
 
-		{ledID: “LED1”, action: “ON/OFF”}
+		{type: “ledAction”, ledID: “LED1”, action: “ON/OFF”}
 
 - Khi dữ liệu là độ ẩm hoặc ánh sáng > ngưỡng hoặc không đúng định dạng thì đèn led2 	với ledID là LED2 bật (ON), còn nếu đúng định dạng thì đèn led2 tắt (OFF)
 
-		{ledID: “LED2”, action: “ON/OFF”}
+		{type: “ledAction”, ledID: “LED2”, action: “ON/OFF”}
 
 
 **Hoạt động 2**: khi nhận được dữ liệu trên topic **icse/newDevices**:
