@@ -1,0 +1,20 @@
+{
+    "name": "html_chart_node",
+    "version": "1.0.0",
+    "description": "Chart Node for Node Red",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },  
+    "dependencies": {
+        "influx":"^5.0.7"        
+    },
+    "author": "Ha Minh Cong",
+    "license": "ISC",
+    "main": "none",
+    "node-red": {
+        "nodes": {
+            "html_chart_nodes": "html-chart.js"
+        }
+    }
+  }
+  
