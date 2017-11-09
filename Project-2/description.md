@@ -111,11 +111,24 @@ Cơ sở dữ liệu sẽ được thiết kế theo BigTable, bao gồm 2 bản
 trong đó các trường macAddr, devices_macAddr, sensorID là các **tags** được đánh chỉ mục.
 (**sensorID** có định dạng: **XX-sensor_id** với **XX** là địa chỉ **mac** của device mà sensor đó thuộc, còn **sensor_id*** là do người dùng tự đặt)
 
+**Schema:**
+
+- Các tags:  **macAddr, devices_macAddr, sensorID** tất cả đều có định dạng là **String**
+
+- Các fields: **type, devicesStatus, sensorStatus** tất cả đều để định dạng là **String**
+	
+
 **Bảng 2: data**: lưu toàn bộ dữ liệu thu thập được từ devices:
 
 		device_macAddr |  sensorID  |  unit  |  value
 		
 trong đó các trường device_macAddr, sensorID là các tags được đánh chỉ mục.
+
+**Schema:**
+
+- Các tags:  **devices_macAddr, sensorID** tất cả đều có định dạng là **String**
+
+- Các fields: **unit: String**, **value: Float**
 
 
 #### **Họat động của ESP**
