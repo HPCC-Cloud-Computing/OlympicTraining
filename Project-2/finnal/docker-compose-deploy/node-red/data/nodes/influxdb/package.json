@@ -1,0 +1,22 @@
+{
+    "name": "influxdb_nodes",
+    "version": "1.0.0",
+    "description": "Influxdb Nodes",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },  
+    "dependencies": {
+      "request": "^2.82.0",
+      "request-promise": "^4.2.1",
+      "influx":"^5.0.7"
+    },
+    "author": "Ha Minh Cong",
+    "license": "ISC",
+    "main": "none",
+    "node-red": {
+        "nodes": {
+            "influxdb": "influxdb.js"
+        }
+    }
+  }
+  
