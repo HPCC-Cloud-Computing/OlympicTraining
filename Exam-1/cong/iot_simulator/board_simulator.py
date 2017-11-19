@@ -99,7 +99,7 @@ class BoardSimulator:
             if authentication_result == 'OK':
                 self.is_authenticated = True
         else:
-            pass
+            print("message received  ", str(message.payload))
 
     @staticmethod
     def on_message_handler(client, user_data, message):
