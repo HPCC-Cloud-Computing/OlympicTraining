@@ -51,18 +51,16 @@ Lập trình thực hiện các công việc sau:
 - Lập trình firmware để nạp vào ESP8266, cho phép người dùng thực hiện smart config: cho phép người dùng connect vào wifi mà esp phát, sau khi connect thành công có giao diện web hiển thị danh sách các wifi để người dùng chọn 1 wifi để esp8266 connect vào, và cho phép người dùng config 2 thông tin là MQTT broker (mặc định để là localhost) và MQTT port (mặc định để 1883). Trong code firmaware cần lưu ý reset lại các wifi mà esp8266 đã connect để luôn yêu cầu người dùng phải chọn wifi để esp connect tới. 
 - Lập trình các function trong code firmware thực hiện việc lấy dữ liệu về chuyển động, ánh sáng, nhiệt độ, độ ẩm và lập trình việc điểu khiển bật/tắt đèn các đèn led xanh, led đỏ, led vàng. (Mã nguồn chỉ cần chứng minh việc đã lập trình được việc lấy dữ liệu từ các sensors và điều khiển được các đèn led). Hiển thị dữ liệu nhiệt độ và độ ẩm đo được lên màn hình OLED.
 - Tạo 1 node mới trong node-red nằm trong panel **M.E.O** có 4 trường cho người dùng nhập vào là: tên node (tring), ngưỡng nhiệt độ (number), ngưỡng độ ẩm (number), ngưỡng ánh sáng (number). (Mã nguồn chỉ cần chứng minh là đã lập trình được việc tạo ra node, và hiển thị được node này trên giao diện của NodeRed).
-- Thiết kế giao diện web có 2 bảng, 1 bảng hiển thị thông tin về devices: mac address, type, ngày đăng kí, trạng thái và 1 bảng hiển thị thông tin về các sensors: device mac address, sensor ID, ngày đăng kí, trạng thái. Có thêm đồ thị line-chart hiển thị dữ liệu đo được về nhiệt độ, độ ẩm và ánh sáng.
+- Thiết kế giao diện web có 2 bảng, 1 bảng hiển thị thông tin về devices: mac address, type, ngày đăng kí, trạng thái và 1 bảng hiển thị thông tin về các sensors: device mac address, sensor ID, ngày đăng kí, trạng thái. Có đồ thị line-chart hiển thị dữ liệu đo được về nhiệt độ, độ ẩm và ánh sáng.
 
 **Câu 2**: 
 
 - Mô tả cách thức truyền nhận dữ liệu giữa device và nodered. Cụ thể là các MQTT topic sẽ có và định dạng message trên từng topic.
-- Lập trình firmware lấy các thông tin dữ liệu từ các cảm biến, đóng gói lại chung trong 1 message và gửi lên topic trên MQTT broker 5s 1 lần.
+- Lập trình firmware đóng gói tất cả dữ liệu lấy được từ tất cả sensors gộp lại chung trong 1 message và gửi lên topic mà nhóm quy định trên MQTT broker 5s 1 lần.
 - Thiết kế database để lưu trữ dữ liệu nhận được từ các sensors và thông tin về các devices, sensors. Connect vào database đó để lấy dữ liệu về nhiệt độ, độ ẩm, ánh sáng đo được để hiển thị lên biểu đồ line-chart.
 - Lập trình **logic** để xử lý theo kịch bản: Khi nhận được dữ liệu về nhiệt độ, độ ẩm, ánh sáng thì xử lý để lưu vào database. Đồng thời kiểm tra nếu cảm biến chuyển động gửi thông tin lên là không có chuyển động thì sẽ gửi lại hành động tắt tất cả các đèn led tới ESP. Khi có chuyển động thì sẽ kiểm tra các ngưỡng mà người dùng đã nhập: nếu gía trị nhiệt độ/độ ẩm/ánh sáng nhận được > ngưỡng nhiệt độ/độ ẩm/ánh sáng thì sẽ bật đèn led theo thứ tự led xanh (ứng với nhiệt độ), led đỏ (ứng với độ ẩm), led vàng (ứng với ánh sáng). Nếu gía trị nhận được bé hơn ngưỡng thì tắt đèn.
 
 **Câu 3:**
-
-- Thiết kế database để lưu thông tin của các devices và sensor, connect và connect vào database đó để lấy thông tin về devices, sensors hiển thị lên các bảng.
 - Đề xuất cơ chế giúp đăng kí các devices và sensors mới, monitor trạng thái của các devices và sensors.
 - Lập trình logic cho cơ chế đã đề xuất trên.
 
