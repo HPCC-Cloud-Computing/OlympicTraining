@@ -1,0 +1,68 @@
+
+.realtime-chart {
+    margin-bottom: 30px;
+}
+
+.realtime-chart .axis {
+    stroke-width: 1;
+}
+
+.axis text {
+    font: 12px sans-serif;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.realtime-chart .group {
+    stroke-width: 1;
+    fill: none;
+}
+
+.realtime-chart .line {
+    stroke-width: 2;
+    fill: none;
+}
+
+.realtime-chart .overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.realtime-chart .focus circle {
+  fill: #F1F3F3;
+  stroke: #6F257F;
+  stroke-width: 5px;
+}
+
+.realtime-chart .hover-line {
+  stroke: #6F257F;
+  stroke-width: 2px;
+  stroke-dasharray: 3,3;
+}
+
+.grid .tick {
+    stroke: lightgrey;
+    /*stroke-width: 0.7;*/
+    shape-rendering: crispEdges;
+}
+
+.grid path {
+    stroke-width: 0;
+}
+
+/*div.tooltip {*/
+/*position: absolute;*/
+/*text-align: center;*/
+/*width: 200px;*/
+/*height: 120px;*/
+/*padding: 2px;*/
+/*font: 12px sans-serif;*/
+/*background: rgba(200, 54, 54, 0.5);*/
+/*border: 0px;*/
+/*border-radius: 8px;*/
+/*pointer-events: none;*/
+/*}*/
