@@ -49,7 +49,7 @@ Các measurement:
 
 **data:**
 
-	time | macAddr (tag)  | name (tag) | value (field - Float)
+	time | macAddr (tag)  | name (tag) | unit (field - Float) | value (field - Float)
 
 
 
@@ -66,9 +66,9 @@ Các measurement:
 			macAddr: "", 
 			type: "data",
 			sensorsData: [
-				{name: "DHT11-t", value: 24},	// value của nhiệt độ
-				{name: "DHT11-h", value: 60},	// value của độ ẩm
-				{name: "BH1750", value: 6000},	// value của ánh sáng
+				{name: "DHT11-t", value: 24, unit: "C"},	// value của nhiệt độ
+				{name: "DHT11-h", value: 60, unit: "%"},	// value của độ ẩm
+				{name: "BH1750", value: 6000, unit: "Lux"},	// value của ánh sáng
 			]
 		}
 
@@ -100,34 +100,90 @@ Container **node-red-gateway** đóng vai trò là gateway, đăng kí topic **i
 
 #### **Trên node-red-gateway**
 
-1. Trên **node-red-gateway** sử dụng 1 biến tên là **newestData-MAC** (với mac là địa chỉ mac của device) trong **global context** để lưu dữ liệu mới nhất nhận được từ **esp** Khi nhận được dữ liệu trên topic **icse/data**  với định dạng:
+**1 - ** Trên **node-red-gateway** sử dụng các biến trong **flow context** tên là **newestData-MAC** (với mac là địa chỉ mac của device) để lưu dữ liệu mới nhất nhận được từ **esp** và các biến **status-MAC** để lưu trạng thái của các device và sensor trên nó. Khi nhận được dữ liệu trên topic **icse/data**  với định dạng:
 	
 		{
 				macAddr: "", 
 				type: "data",
 				sensorsData: [
-					{name: "DHT11-t", value: 24},	// value của nhiệt độ
-					{name: "DHT11-h", value: 60},	// value của độ ẩm
-					{name: "BH1750", value: 6000},	// value của ánh sáng
+					{name: "DHT11-t", value: 24, unit: "C"},	// value của nhiệt độ
+					{name: "DHT11-h", value: 60, unit: "%"},	// value của độ ẩm
+					{name: "BH1750", value: 6000, unit: "Lux"},	// value của ánh sáng
 				]
 		}
 
-	thì kiểm tra xem biến  **newestData-MAC** đã tồn tại chưa, nếu chưa thì thêm mới, còn có rồi thì cập nhật gía trị cho biến **newestData-MAC**, sau đó thêm  **timestamp** vào dữ liệu, khi đó dữ liệu mới có định dạng:
+thì:
+	
+- Kiểm tra định dạng dữ liệu (C: [1, 100]; 	%: [0, 100],	lux: [1, 65535] - đúng định dạng thì trạng thì là ONLINE, khác thì là OFFLINE) theo từng đơn vị đo và so sánh với trạng thái của sensor trong biến **status-MAC**, nếu biến **statuss-MAC** chưa có thì thêm mới, nếu trạng thái của sensor khác nhau thì cập nhật trạng thái của sensor đó trong biến **status-MAC**. Biến **status-MAC** có định dạng:
 
 		{
-				macAddr: "", 
-				type: "data",
-				time: timestamp,
-				sensorsData: [
-					{name: "DHT11-t", value: 24},
-					{name: "DHT11-h", value: 60},
-					{name: "BH1750", value: 6000},
-				]
+			"macAddr": "MAC",
+			"DHT11-t" : "ONLINE/OFFLINE",
+			"DHT11-h" : "ONLINE/OFFLINE",
+			"DHT11-t" : "ONLINE/OFFLINE",
+			"latestTimeReceiveData": timestamp
 		}
 
-	Dữ liệu kia sẽ được thêm vào 1 mảng để chờ sau 1 phút sẽ gửi dữ liệu lên **node-red-server** thông qua việc gửi **HTTP POST** request tới api **127.0.0.1:1880/api/postData** và cập nhật lại mảng dữ liệu kia.
+	***( không quản lý trạng thái của các sensor không có unit)***
 
-2. Nhằm mục đích mô phỏng việc bật/tắt quạt khi phòng có người hoặc không có người, sẽ sử dụng kịch bản khi nhận được dữ liệu thông báo có chuyển động lần 1 thì bật quạt, lần 2 thì tắt quạt (trong thực tế sẽ cần check khi nào thì không còn người trong phòng mới tắt) thì ta sẽ lưu 1 biến tên là **motionCount-MAC** trong **flow context**. Khi nhận được thông báo có chuyển động lần đầu tiên thì thiết lập **motionCount-MAC = 1**, khi nhận được lần 2 thì thiết lập lại **motionCount-MAC = 0**, và lần 3 thì lại là 1 ..v..v.. Mỗi khi nhận được dữ lệu thông báo có chuyển động trên topic **icse/data** với định dạng 
+	sau 5 phút thì kiểm tra tất cả các biến **status-MAC**, device nào có **latestTimeReceiveData < now() - 5 phút** thì gửi trạng thái của các sensor sử dụng **HTTP POST** lên server thông qua api **127.0.0.1:1880/api/status**, với định dạng:
+
+		{
+			macAddr: "MAC",
+			DHT11-t : "ONLINE/OFFLINE",
+			DHT11-h : "ONLINE/OFFLINE",
+			DHT11-t : "ONLINE/OFFLINE",
+			type: "sensorStatus"
+		}
+
+ device nào có **latestTimeReceiveData < now() - 30 phút** thì gửi message thông báo device đó **OFFLINE** lên server cũng qua api **127.0.0.1:1880/api/status** với định dạng:
+	
+	{
+			macAddr: "MAC",
+			type: "deviceStatus",
+			status: "OFFLINE"
+		}
+	
+- Kiểm tra xem biến  **newestData-MAC** đã tồn tại chưa, nếu chưa thì thêm mới, còn có rồi thì cập nhật gía trị cho biến **newestData-MAC**, sau đó thêm  **timestamp** vào dữ liệu, khi đó dữ liệu mới có định dạng:
+
+		{
+			macAddr: "", 
+			type: "data",
+			time: timestamp,
+			sensorsData: [
+				{name: "DHT11-t", value: 24, unit: "C"},
+				{name: "DHT11-h", value: 60, unit: "%"},
+				{name: "BH1750", value: 6000, unit: "Lux"},
+			]
+		}
+
+	***(chỉ cập nhật/thêm mới các sensor có unit đúng định dạng)***
+
+Dữ liệu kia sẽ được thêm vào 1 biến là **devicesDataList** là 1 mảng, để chờ sau 1 phút sẽ gửi dữ liệu lên **node-red-server** thông qua việc gửi **HTTP POST** request tới api **127.0.0.1:1880/api/postData**, sau đó cập nhật lại mảng dữ liệu **devicesDataList**.
+
+Mảng lưu dữ liệu: **devicesDataList** có định dạng:
+
+		devicesDataList = [
+			{
+				macAddr: "MAC1", 
+				data: [
+					{
+						time: timestamp,
+						sensorsData: [
+							{name: "DHT11-t", value: 24, unit: "C"},
+							{name: "DHT11-h", value: 60, unit: "%"},
+							{name: "BH1750", value: 6000, unit: "Lux"},
+						]
+					},
+					.......
+				]
+			},
+			.........
+		]
+
+
+
+**2 - ** Nhằm mục đích mô phỏng việc bật/tắt quạt khi phòng có người hoặc không có người, sẽ sử dụng kịch bản khi nhận được dữ liệu thông báo có chuyển động lần 1 thì bật quạt, lần 2 thì tắt quạt (trong thực tế sẽ cần check khi nào thì không còn người trong phòng mới tắt) thì ta sẽ lưu 1 biến tên là **motionCount-MAC** trong **flow context**. Khi nhận được thông báo có chuyển động lần đầu tiên thì thiết lập **motionCount-MAC = 1**, khi nhận được lần 2 thì thiết lập lại **motionCount-MAC = 0**, và lần 3 thì lại là 1 ..v..v.. Mỗi khi nhận được dữ lệu thông báo có chuyển động trên topic **icse/data** với định dạng 
 
 		{
 			macAddr: "", 
@@ -172,11 +228,31 @@ Container **node-red-gateway** đóng vai trò là gateway, đăng kí topic **i
 		}
 
 
-2. Khi nhận được dữ liệu trên api **api/postData** thì kiểm tra định dạng của từng đơn vị đo, sau đó lưu vào cơ sở dữ liệu.
+2. Khi nhận được dữ liệu trên api **api/postData** với định dạng như dưới thì lưu vào measurement **data** trong **influxdb**
 
-3.  Sau 1 tiếng lại lấy dữ liệu trung bình về độ ẩm trong 1 tiếng trước của tất cả các device. Nếu độ ẩm trung bình > 70 % thì gửi hành động bật đèn. Sau 5 phút thì gửi hành động tắt đèn. Hành động bật/tắt đèn được gửi lên **icse/MAC/action** với định dạng:
+		devicesDataList = [
+			{
+				macAddr: "MAC1", 
+				data: [
+					{
+						time: timestamp,
+						sensorsData: [
+							{name: "DHT11-t", value: 24, unit: "C"},
+							{name: "DHT11-h", value: 60, unit: "%"},
+							{name: "BH1750", value: 6000, unit: "Lux"},
+						]
+					},
+					.......
+				]
+			},
+			.........
+		]
+
+3.  Sau 10 phút lại lấy dữ liệu trung bình về độ ẩm trong 1 tiếng trước của tất cả các device (gỉa sử tất cả các device đều có cảm biến đo gía trị độ ẩm). Nếu độ ẩm trung bình > 70 % thì gửi hành động bật đèn. Sau 5 phút thì gửi hành động tắt đèn. Hành động bật/tắt đèn được gửi lên **icse/MAC/action** với định dạng:
 
 		{
 			type: "ledAction",
 			action: "ON/OFF"
 		}
+
+4. Khi nhận được message thông báo status của các device/sensor qua api **/api/status** thì kiểm tra status của device/sensors đó tương ứng trong cơ sở dữ liệu. Nếu status mới khác thì up date status trong cả mysql và influxdb.
