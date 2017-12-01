@@ -1,0 +1,122 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'unpublish',
+1 verbose cli   'thao-node-red-contrib-meo-esp',
+1 verbose cli   '--force' ]
+2 info using npm@3.10.10
+3 info using node@v6.11.2
+4 warn using --force I sure hope you know what you are doing.
+5 silly unpublish args[0] thao-node-red-contrib-meo-esp
+6 silly unpublish thing Result {
+6 silly unpublish   raw: 'thao-node-red-contrib-meo-esp',
+6 silly unpublish   scope: null,
+6 silly unpublish   escapedName: 'thao-node-red-contrib-meo-esp',
+6 silly unpublish   name: 'thao-node-red-contrib-meo-esp',
+6 silly unpublish   rawSpec: '',
+6 silly unpublish   spec: 'latest',
+6 silly unpublish   type: 'tag' }
+7 verbose getPublishConfig null
+8 silly ls normalized thao-node-red-contrib-meo-esp
+9 silly gentlyRm /home/donghm/.npm/thao-node-red-contrib-meo-esp is being purged
+10 verbose gentlyRm don't care about contents; nuking /home/donghm/.npm/thao-node-red-contrib-meo-esp
+11 silly mapToRegistry name thao-node-red-contrib-meo-esp
+12 silly mapToRegistry using default registry
+13 silly mapToRegistry registry https://registry.npmjs.org/
+14 silly mapToRegistry data Result {
+14 silly mapToRegistry   raw: 'thao-node-red-contrib-meo-esp',
+14 silly mapToRegistry   scope: null,
+14 silly mapToRegistry   escapedName: 'thao-node-red-contrib-meo-esp',
+14 silly mapToRegistry   name: 'thao-node-red-contrib-meo-esp',
+14 silly mapToRegistry   rawSpec: '',
+14 silly mapToRegistry   spec: 'latest',
+14 silly mapToRegistry   type: 'tag' }
+15 silly mapToRegistry uri https://registry.npmjs.org/thao-node-red-contrib-meo-esp
+16 verbose get GET as part of write; not caching result
+17 verbose request uri https://registry.npmjs.org/thao-node-red-contrib-meo-esp?write=true
+18 verbose request no auth needed
+19 info attempt registry request try #1 at 1:15:35 AM
+20 verbose request using bearer token for auth
+21 verbose request id cd1fb939a88d6ba7
+22 http request GET https://registry.npmjs.org/thao-node-red-contrib-meo-esp?write=true
+23 http 200 https://registry.npmjs.org/thao-node-red-contrib-meo-esp?write=true
+24 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+24 verbose headers   'content-type': 'application/json',
+24 verbose headers   etag: '"5a216f34-3bbf"',
+24 verbose headers   'content-encoding': 'gzip',
+24 verbose headers   'cache-control': 'max-age=0',
+24 verbose headers   'transfer-encoding': 'chunked',
+24 verbose headers   'accept-ranges': 'bytes',
+24 verbose headers   date: 'Fri, 01 Dec 2017 18:15:36 GMT',
+24 verbose headers   via: '1.1 varnish',
+24 verbose headers   connection: 'keep-alive',
+24 verbose headers   'x-served-by': 'cache-hkg17932-HKG',
+24 verbose headers   'x-cache': 'MISS',
+24 verbose headers   'x-cache-hits': '0',
+24 verbose headers   'x-timer': 'S1512152135.346133,VS0,VE714',
+24 verbose headers   vary: 'Accept-Encoding' }
+25 silly get cb [ 200,
+25 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+25 silly get     'content-type': 'application/json',
+25 silly get     etag: '"5a216f34-3bbf"',
+25 silly get     'content-encoding': 'gzip',
+25 silly get     'cache-control': 'max-age=0',
+25 silly get     'transfer-encoding': 'chunked',
+25 silly get     'accept-ranges': 'bytes',
+25 silly get     date: 'Fri, 01 Dec 2017 18:15:36 GMT',
+25 silly get     via: '1.1 varnish',
+25 silly get     connection: 'keep-alive',
+25 silly get     'x-served-by': 'cache-hkg17932-HKG',
+25 silly get     'x-cache': 'MISS',
+25 silly get     'x-cache-hits': '0',
+25 silly get     'x-timer': 'S1512152135.346133,VS0,VE714',
+25 silly get     vary: 'Accept-Encoding' } ]
+26 verbose get saving thao-node-red-contrib-meo-esp to /home/donghm/.npm/registry.npmjs.org/thao-node-red-contrib-meo-esp_3Fwrite_3Dtrue/.cache.json
+27 verbose correctMkdir /home/donghm/.npm correctMkdir not in flight; initializing
+28 info unpublish No version specified, removing all
+29 verbose request uri https://registry.npmjs.org/thao-node-red-contrib-meo-esp/-rev/11-355ac4612da10ca8876c9bb7f0d98d14
+30 verbose request sending authorization for write operation
+31 info attempt registry request try #1 at 1:15:36 AM
+32 verbose request using bearer token for auth
+33 http request DELETE https://registry.npmjs.org/thao-node-red-contrib-meo-esp/-rev/11-355ac4612da10ca8876c9bb7f0d98d14
+34 http 400 https://registry.npmjs.org/thao-node-red-contrib-meo-esp/-rev/11-355ac4612da10ca8876c9bb7f0d98d14
+35 verbose headers { 'content-type': 'application/json',
+35 verbose headers   'cache-control': 'max-age=300',
+35 verbose headers   'content-length': '181',
+35 verbose headers   'accept-ranges': 'bytes',
+35 verbose headers   date: 'Fri, 01 Dec 2017 18:15:36 GMT',
+35 verbose headers   via: '1.1 varnish',
+35 verbose headers   connection: 'keep-alive',
+35 verbose headers   'x-served-by': 'cache-hkg17932-HKG',
+35 verbose headers   'x-cache': 'MISS',
+35 verbose headers   'x-cache-hits': '0',
+35 verbose headers   'x-timer': 'S1512152136.142534,VS0,VE245',
+35 verbose headers   vary: 'Accept-Encoding, Accept' }
+36 verbose request invalidating /home/donghm/.npm/registry.npmjs.org/thao-node-red-contrib-meo-esp on DELETE
+37 verbose stack Error: You can no longer unpublish this package.
+37 verbose stack Please deprecate it instead:
+37 verbose stack npm deprecate thao-node-red-contrib-meo-esp "this package has been deprecated" : thao-node-red-contrib-meo-esp
+37 verbose stack     at makeError (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+37 verbose stack     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:290:14)
+37 verbose stack     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+37 verbose stack     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:187:22)
+37 verbose stack     at emitTwo (events.js:106:13)
+37 verbose stack     at Request.emit (events.js:191:7)
+37 verbose stack     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1048:10)
+37 verbose stack     at emitOne (events.js:96:13)
+37 verbose stack     at Request.emit (events.js:188:7)
+37 verbose stack     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:969:12)
+38 verbose statusCode 400
+39 verbose pkgid thao-node-red-contrib-meo-esp
+40 verbose cwd /home/donghm/Desktop/dashboard
+41 error Linux 4.2.0-42-generic
+42 error argv "/usr/bin/nodejs" "/usr/bin/npm" "unpublish" "thao-node-red-contrib-meo-esp" "--force"
+43 error node v6.11.2
+44 error npm  v3.10.10
+45 error code E400
+46 error You can no longer unpublish this package.
+46 error Please deprecate it instead:
+46 error npm deprecate thao-node-red-contrib-meo-esp "this package has been deprecated" : thao-node-red-contrib-meo-esp
+47 error If you need help, you may report this error at:
+47 error     <https://github.com/npm/npm/issues>
+48 verbose exit [ 1, true ]
