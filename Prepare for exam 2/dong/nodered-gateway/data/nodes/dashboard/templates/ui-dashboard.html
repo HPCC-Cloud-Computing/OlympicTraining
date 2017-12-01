@@ -1,0 +1,168 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dashboard</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="/dashboard/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/dashboard/static/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/dashboard/static/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/dashboard/static/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" type="text/css" href="/dashboard/static/css/chart.css">
+    <link rel="stylesheet" type="text/css" href="/dashboard/static/css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="/dashboard/static/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="/dashboard/static/js/plugins/datatables/jquery.dataTables.css">
+    <!--<link rel="stylesheet" type="text/css" href="/dashboard/static/js/plugins/datatables/dataTables.bootstrap.css">-->
+
+</head>
+
+<!--<body class="fixed sidebar-mini sidebar-mini-expand-feature skin-black-light">-->
+<body class="sidebar-mini skin-blue">
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Header Navbar: style can be found in header.less -->
+        <a href="index.html" class="logo">
+            <span class="logo-lg"><b>BK IoT</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+
+            <div class="navbar-custom-menu">
+            </div>
+        </nav>
+    </header>
+    <!-- Sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <ul class="sidebar-menu" id="sidebar-menu">
+                <li class="active icse-sidebar-element">
+                    <a href="#" id="devices-info">
+                        <i class="fa fa-columns" aria-hidden="true"></i>
+                        <span>Devices info</span>
+                    </a>
+                </li>
+                <li class="icse-sidebar-element">
+                    <a href="#" id="sensors-info">
+                        <i class="fa fa-thermometer-empty" aria-hidden="true"></i>
+                        <span>Sensors info</span>
+                    </a>
+                </li>
+                <li class="icse-sidebar-element">
+                    <a href="#" id="line-chart">
+                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                        <span>Lines chart</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <h1 id="content-header-text">
+                Devices Information
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <div class="row icse-datatables-info-container">
+                <p id="load-data-for-table">Loading data ... </p>
+                <table id="icse-datatables-info" class="display" width="100%">
+                </table>
+                <!--<div class="row">-->
+                    <!--<h3>Sensor logs</h3>-->
+                    <!--<form class="form-inline">-->
+                        <!--<div class="box-body">-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="control-label" for="device-logs-select">-->
+                                    <!--Select device-->
+                                <!--</label>-->
+                                <!--<select class="form-control" id="device-logs-select">-->
+                                <!--</select>-->
+                            <!--</div>-->
+                            <!--<div class="form-group" style="margin-left: 20px; display: none;">-->
+                                <!--<label class="control-label" for="sensor-logs-select">-->
+                                    <!--Select sensor-->
+                                <!--</label>-->
+                                <!--<select class="form-control" id="sensor-logs-select">-->
+                                <!--</select>-->
+                            <!--</div>-->
+                            <!--<div class="form-group" style="margin-left: 20px;">-->
+                                <!--<label class="control-label" for="status">Current status: </label>-->
+                                <!--<label class="control-label" id="status">ONLINE</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</form>-->
+                    <!--<table id="icse-datatables-logs" class="display" width="100%">-->
+                    <!--</table>-->
+                <!--</div>-->
+            </div>
+
+
+            <div class="row" id="sensor-data-chart-container" style="display: none">
+                <p id="load-data-for-chart" style="margin: 30px;">Loading data ... </p>
+                <div class="row" id="combobox-devices" style="display: none">
+                    <form class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Select device
+                                </label>
+                                <div class="col-md-3">
+                                    <select class="form-control" name="chart-controller-input"
+                                            id="chart-controller-input">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <p id="no-data-realtime" style="margin-left: 100px; display: none">The device have no real time data
+                        for chart!</p>
+                </div>
+
+                <div class="row">
+                    <div class="realtime-chart col-md-10" style="padding-left:30px;" id="sensor-data-chart">
+                        <!--<div id='tooltip' style='position:absolute;background-color:lightgray;padding:5px'></div>-->
+                    </div>
+                    <div class="col-md-2 chart-legend" id="sensor-legend-chart"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+</body>
+
+<!-- Script Section -->
+
+<script type="text/javascript" src="/dashboard/static/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/dashboard/static/js/select2.min.js"></script>
+<script type="text/javascript" src="/dashboard/static/js/d3.v3.min.js"></script>
+<!--datatables script -->
+<script type="text/javascript" src="/dashboard/static/js/plugins/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/dashboard/static/js/plugins/datatables/dataTables.bootstrap.js"></script>
+
+<script src="/dashboard/static/bower_components/bootstrap.min.js"></script>
+<script src="/dashboard/static/bower_components/jquery.slimscroll.js"></script>
+<script src="/dashboard/static/bower_components/adminlte.min.js"></script>
+
+<script type="text/javascript" src="/dashboard/static/js/line-chart.js"></script>
+<script type="text/javascript" src="/dashboard/static/js/main.js"></script>
+
+<!-- //Script Section -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#devices-info').click();
+    });
+</script>
+
+</html>
