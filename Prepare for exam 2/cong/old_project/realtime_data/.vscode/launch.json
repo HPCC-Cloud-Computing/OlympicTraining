@@ -1,0 +1,13 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "get_api_data",
+                "program": "${workspaceRoot}/test_js/get_api_data.js",
+                "restart": true,
+                "console": "integratedTerminal"            
+            }
+        ]
+    }

@@ -1,0 +1,227 @@
+<!--
+  Copyright JS Foundation and other contributors, http://js.foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!-- <div class="form-row inject-time-row hidden" id="inject-time-row-interval" style="display: block;">
+            <span>Interval: </span>
+            <span class="ui-spinner ui-widget ui-widget-content ui-corner-all">
+                <input id="inject-time-interval-count" value="1" aria-valuemin="1" aria-valuenow="1" autocomplete="off" role="spinbutton">
+                <a class="ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only" tabindex="-1" role="button" aria-disabled="false">
+                    <span class="ui-button-text"><span class="ui-icon ui-icon-triangle-1-n">▲</span></span>
+            </a>
+            <a class="ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only"
+                tabindex="-1" role="button" aria-disabled="false"><span class="ui-button-text"><span class="ui-icon ui-icon-triangle-1-s">▼</span></span></a></span>
+            <select style="width: 100px" id="inject-time-interval-units">
+                <option value="s" data-i18n="node-red:inject.seconds">seconds</option>
+                <option value="m" data-i18n="node-red:inject.minutes">minutes</option>
+                <option value="h" data-i18n="node-red:inject.hours">hours</option>
+            </select><br>
+        </div>         -->
+<!-- <input type="hidden" id="node-input-crontab"> -->
+<!-- <input type="hidden" id="node-input-repeat"> -->
+<!-- <div class="form-row">
+    <label for="node-input-payload">
+            <i class="fa fa-envelope"> </i>Payload
+        </label>
+    <input type="text" id="node-input-payload" style="width:70%">
+    <input type="hidden" id="node-input-payloadType">
+</div> -->
+
+
+<script type="text/x-red" data-template-name="real-time-data">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="triggerMode-select"><i class="fa fa-cogs"></i> <span>Mode</span></label>
+        <select id="triggerMode-select">
+                <option value="none" selected="selected">One time after start</option>
+                <option value="interval">Repeat after a time interval</option>
+        </select>
+        <input type="hidden" id="node-input-triggerMode">
+        <input type="hidden" id="node-input-delaySecond">
+        <input type="hidden" id="node-input-repeatSecond">
+    </div>
+    <div class="form-row trigger-mode-row hidden" id="trigger-mode-row-none">
+        <label for="trigger-delay-count"><i class="fa fa-play"></i> <span>Delay</span></label>
+        <input id="trigger-delay-count" style="width:90px !important;" value="1" type="number" step="1" min="1">
+        </input>
+        <span>seconds</span>
+    </div>
+    <div class="form-row trigger-mode-row hidden" id="trigger-mode-row-interval">
+        <label for="trigger-interval-count"><i class="fa fa-repeat"></i> <span>Interval</span></label>
+        <input id="trigger-interval-count" style="width:90px !important;" value="1" type="number" step="1" min="1">
+        </input>
+        <span>seconds</span>
+    </div>
+    <div class="form-row">
+        <label for="node-input-apiUrl"><i class="fa fa-globe"></i> API URL</label>
+        <input type="text" id="node-input-apiUrl" placeholder="URL of data source" value="">
+    </div>
+
+    <div class="form-row" id="node-once">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-once" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-once" style="width: 70%;" data-i18n="inject.onstart"></label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-return-type"><i class="fa fa-arrow-left"></i> <span>Return</span></label>
+        <select id="node-input-return-type">
+                                        <option value="string">a UTF8 String</option>
+                                        <option value="JSON">a parsed JSON Object</option>
+                    </select>
+        <input type="hidden" id="node-input-returnType">
+    </div>
+
+</script>
+<style>
+    .inject-time-row {
+        padding-left: 110px;
+    }
+
+    .inject-time-row select {
+        margin: 3px 0;
+    }
+
+    .inject-time-days label {
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        vertical-align: top;
+        width: 100px;
+    }
+
+    .inject-time-days input {
+        width: auto;
+    }
+
+    .inject-time-times {
+        width: 90px;
+    }
+
+    #inject-time-time {
+        width: 75px;
+    }
+
+    .inject-time-count {
+        width: 40px !important;
+    }
+</style>
+
+<script type="text/x-red" data-help-name="real-time-data">
+    <p>A node used for query data from realtime web server via RESTFUL API once time or repeat in a interval</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('real-time-data', {
+        category: 'input',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: "" },
+            payload: { value: "" },
+            payloadType: { value: "1234" },
+            triggerMode: { value: "none" },
+            apiUrl: { value: "1234" },
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: "./icons/input-real-time-data.png",
+        label: function () {
+            return this.name || "realtime-data";
+        },
+        oneditprepare: function () {
+            // console.log(this.triggerMode);
+            $("#triggerMode-select").change(function () {
+                var modeSelected = $("#triggerMode-select").val();
+                $(".trigger-mode-row").hide();
+                $("#trigger-mode-row-" + modeSelected).show();
+            });
+            var modeSelected = $("#triggerMode-select").val();
+            // console.log(modeSelected);
+            $(".trigger-mode-row").hide();
+            $("#trigger-mode-row-" + modeSelected).show();
+            // if (this.payloadType == null) {
+            //     if (this.payload == "") {
+            //         this.payloadType = "date";
+            //     } else {
+            //         this.payloadType = "str";
+            //     }
+            // } else if (this.payloadType === 'string' || this.payloadType === 'none') {
+            //     this.payloadType = "str";
+            // }
+            // $("#node-input-payloadType").val(this.payloadType);
+
+            // $("#node-input-payload").typedInput({
+            //     default: 'str',
+            //     typeField: $("#node-input-payloadType"),
+            //     types: ['flow', 'global', 'str', 'num', 'bool', 'json', 'bin', 'date']
+            // });
+        },
+        oneditsave: function () {
+            var modeSelected = $("#triggerMode-select").val();
+            $("#node-input-triggerMode").val(modeSelected);
+        },
+        button: {
+            enabled: function () {
+                // return !this.changed
+                // return false;
+                return true;
+            },
+            onclick: function () {
+                alert("clicked!");
+                // if (this.changed) {
+                //     return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+                // }
+                // var label = (this.name||this.payload);
+                // if (label.length > 30) {
+                //     label = label.substring(0,50)+"...";
+                // }
+                // label = label.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+                // if (this.payloadType === "date") { label = this._("inject.timestamp"); }
+                // if (this.payloadType === "none") { label = this._("inject.blank"); }
+                // var node = this;
+                // $.ajax({
+                //     url: "inject/"+this.id,
+                //     type:"POST",
+                //     success: function(resp) {
+                //         RED.notify(node._("inject.success",{label:label}),"success");
+                //     },
+                //     error: function(jqXHR,textStatus,errorThrown) {
+                //         if (jqXHR.status == 404) {
+                //             RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.not-deployed")}),"error");
+                //         } else if (jqXHR.status == 500) {
+                //             RED.notify(node._("common.notification.error",{message:node._("inject.errors.failed")}),"error");
+                //         } else if (jqXHR.status == 0) {
+                //             RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.no-response")}),"error");
+                //         } else {
+                //             RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.unexpected",{status:jqXHR.status,message:textStatus})}),"error");
+                //         }
+                //     }
+                // });
+            }
+        }
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        $("#inject-time-row-interval").show();
+    });
+
+</script>
